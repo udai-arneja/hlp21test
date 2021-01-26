@@ -34,6 +34,7 @@ let checkVersionAndWarn() =
 
 let mutable marksSoFar: Map<string,Mark> = Map.empty
 
+/// add mark of m / 1 for q qstr
 let mark qStr m = 
     marksSoFar <- 
         match Map.tryFind qStr marksSoFar with
@@ -56,7 +57,8 @@ let checkMCQ opts q qStr =
     testCase (sprintf "Checking MCQ answer for %s is in allowed range" qStr) <| fun () -> ()
         
 
-let markMCQ correct q qStr = Expect.equal  correct q $"{qStr} answer is {correct}"
+let markMCQ correct q qStr = 
+    Expect.equal  correct q $"{qStr} answer is {correct}"
 
 
 let markAndTest markIfOk model q qStr arg  =

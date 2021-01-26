@@ -1,57 +1,8 @@
 ﻿module Tests
 open Expecto
-//-----------------------------------------------------------------------------------------------//
-//------------------------------DO NOT CHANGE THIS FILE------------------------------------------//
-//-----------------------------------------------------------------------------------------------//
+open TestLib
 
 
-open FsCheck
-
-type Mark = {OutOf: float; Attained: float}
-
-
-
-let mutable marksSoFar: Map<string,Mark> = Map.empty
-
-let mark qStr m = 
-    marksSoFar <- 
-        match Map.tryFind qStr marksSoFar with
-        | None -> Map.add qStr {OutOf=1.; Attained=m} marksSoFar
-        | Some mRec -> Map.add qStr {mRec with Attained = min mRec.Attained m} marksSoFar
-
-/// This Test always succeeds but prints out a warning if the MCQ answer is not one of the allowed options
-let checkMCQ opts q qStr = 
-    match (try Ok (q()) with | e -> Error e.Message) with
-    | Error mess ->
-        printfn "\n****Warning**** %s has not yet been answered\n\n" qStr
-    | Ok q -> 
-        if not <| List.contains q opts
-            then printfn "\n****Warning**** %s must be one of: %s\n\n" qStr (String.concat "," (List.map (sprintf "%A") opts))
-    testCase (sprintf "Checking MCQ answer for %s is in allowed range" qStr) <| fun () -> ()
-        
-
-let markMCQ correct q qStr = Expect.equal  correct q $"{qStr} answer is {correct}"
-
-
-let markAndTest markIfOk model q qStr arg  =
-    let ok = model arg = q arg
-    mark qStr  (if ok then markIfOk else 0.)
-    if not ok then
-        printfn $"----Error Detail----\n{qStr} {arg} = {q arg}, {qStr}Model {arg} = {model arg}\n--------------------\n"
-        failwithf "test failed"
-    ok
-
-let checkAgainstModel model q qStr maxMark =
-    testProperty qStr <| markAndTest maxMark model q qStr
-
-let checkAgainstModelIfNotEmpty model q qStr maxMark =
-    let markAndTest' markIfOk arg  =       
-        arg <> [] ==> 
-            Prop.ofTestable (fun () ->
-                markAndTest maxMark model q qStr arg)
-     
-
-    testProperty qStr <| markAndTest' maxMark
 
 (*
 Q3. The output list is twice the length of the input list. Each input list element occurs in order
@@ -66,6 +17,7 @@ let q3Model (lst: 'a list) : 'a list =
 (*
 Q4. The output is the sum of all the elements in the input lists.
 Recursive functions are not alowed in the answer.
+You may assume that lsts is not empty
 *)
 let rec q4Model (lsts: int list list) : int = 
     let rec sumL lst =
@@ -111,6 +63,10 @@ let rec q6Model (lst: int list) : int list =
         List.init (n/2) (fun i -> lst.[2*i] * lst.[2*i+1])
     | n -> 
         q6Model lst.[0..n-2] @ [lst.[n-1] * lst.[n-1]]
+
+
+
+        
 
 [<Tests>]    
 let tests =
