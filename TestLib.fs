@@ -62,7 +62,8 @@ let markMCQ correct q qStr =
 
 
 let markAndTest markIfOk model q qStr arg  =
-    marksSoFar <- Map.add qStr {OutOf=1.; Attained= -1.} marksSoFar
+    if not <| marksSoFar.ContainsKey qStr then
+        marksSoFar <- Map.add qStr {OutOf=1.; Attained= -1.} marksSoFar
     let ok = 
         try
             model arg = q arg

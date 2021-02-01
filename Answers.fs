@@ -23,8 +23,9 @@ Q3. The output list is twice the length of the input list. Each input list eleme
 in the output, twice. E.g [1;2;5] -> [1;1;2;2;5;5].
 You are not allowed to use list indexing (.[] or List.item) in your answer.
 *)
-let q3 (lst: int list) : int list =
-    List.collect (fun el -> [el;el]) lst
+let q3 (lst: int list) : int list = 
+    if lst = [] then [] else 
+        List.collect (fun el -> [el;el]) lst
 
 
 (*
