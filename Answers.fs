@@ -24,8 +24,7 @@ in the output, twice. E.g [1;2;5] -> [1;1;2;2;5;5].
 You are not allowed to use list indexing (.[] or List.item) in your answer.
 *)
 let q3 (lst: int list) : int list = 
-    if lst = [] then [] else 
-        List.collect (fun el -> [el;el]) lst
+    List.collect (fun el -> [el;el]) lst
 
 
 (*
@@ -70,3 +69,8 @@ let q6' (lst: int list): int list =
     List.chunkBySize 2 lst
     |> List.map (function | [a;b] -> a*b | [x] -> x*x | _ -> failwithf "What? can't happen!")
 
+let rec q6'' (lst: int list): int list =
+    match lst with
+    | [] -> []
+    | [last] -> [last * last]
+    | e1 :: e2 :: lst' -> e1*e2 :: q6'' lst'
