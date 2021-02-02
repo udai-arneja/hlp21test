@@ -60,10 +60,13 @@ let checkMCQ opts q qStr =
 let markMCQ correct q qStr = 
     Expect.equal  correct q $"{qStr} answer is {correct}"
 
-
-let markAndTest markIfOk model q qStr arg  =
+let addQuestion qStr =
     if not <| marksSoFar.ContainsKey qStr then
         marksSoFar <- Map.add qStr {OutOf=1.; Attained= -1.} marksSoFar
+
+
+let markAndTest markIfOk model q qStr arg  =
+    addQuestion qStr
     let ok = 
         try
             model arg = q arg
