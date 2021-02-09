@@ -52,7 +52,7 @@ let checkMCQ opts q qStr =
     | Error mess ->
         printfn "\n****Warning**** %s has not yet been answered\n\n" qStr
     | Ok q -> 
-        if not <| List.contains q opts
+        if ((not <| List.contains q opts) || opts = [])
             then printfn "\n****Warning**** %s must be one of: %s\n\n" qStr (String.concat "," (List.map (sprintf "%A") opts))
     testCase (sprintf "Checking MCQ answer for %s is in allowed range" qStr) <| fun () -> ()
         
