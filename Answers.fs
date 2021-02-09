@@ -15,7 +15,7 @@ type q1Type =
     | NextThing
     | DoubleThing of Q1SubType * Q1SubType
 
-let q1() : int = failwith "Not answered"
+let q1() : int = 73
 
 
 // ----------------------------Q2----------------------
@@ -34,7 +34,7 @@ Q2. In q2DemoMatch
 2 = The No Match case will never be evaluated because the first case pattern matches for all values of y.
 (q2 is a function that must return the correct answer)
 *)
-let q2() : int = failwithf "Not answered"
+let q2() : int = 2 //or 2?
 
 //----------------------------Q3--------------------------
 (*
@@ -47,7 +47,7 @@ Pure functional programs, when compared with object oriented (OO) programs
 (q3 is a function that must return the correct answer)
 *)
 
-let q3() : int = failwithf "Not answered"
+let q3() : int = 1
 
 //------------------------------Q4---------------------------
 (*
@@ -62,7 +62,7 @@ The two cases of the Discriminated Union type Result<'T1,'T2> type represent:
 (q4 is a function that must return the correct answer)
 *)
 
-let q4() : int = failwithf "Not answered"
+let q4() : int = 2
 
 //---------------------------------Q5--------------------------
 
@@ -77,7 +77,7 @@ In otherwise pure F# programs with printf
 (q5 is a function that must return the correct answer)
 *)
 
-let q5() : int = failwithf "Not answered"
+let q5() : int = 2
 
 
 //----------------------------------Q6 --------------------------
@@ -100,7 +100,7 @@ tail recursive you get 15. If you think no calls are tail recursive you get 0.
 Return your sum as the value of q6()
 *)
 
-let q6() = failwithf "Not Answered"
+let q6() = 11
 
 
 //------------------------------------Q7---------------------------------------------
@@ -113,7 +113,12 @@ can be of any length, without using recursion
 [1;2] -> [2]
 [1;4;0;7;8;10;11] -> [0;10
 *)
-let q7 (lst: 'a list) : 'a list = failwithf "Not answered"
+let q7 (lst: 'a list) : 'a list =
+    lst
+    |> List.indexed
+    |> List.map (fun (a,b)-> (a+1,b))
+    |> List.filter (fun (x,y)->x%3=0)
+    |> List.map (fun (a,b)-> b)
 
 //----------------------------------------Q8-----------------------------------------
 
@@ -128,7 +133,10 @@ Your answer need not be tail recursive.
 [1;2] -> []
 [1;4;0;7;8;10;11] -> [0;10]
 *)
-let rec q8 (lst: 'a list) : 'a list = failwithf "Not answered"
+let rec q8 (lst: 'a list) : 'a list =
+    match lst with
+    | hd::hd1::hd2::tail -> hd2::(q8 tail)
+    | _ -> []
 
 //----------------------------------------Q9------------------------------------------   
 (*
@@ -136,7 +144,24 @@ Q9.
 Write a function q8 that returns a single set of all the elements in set2 not in set1 and the elements in set1 not in set2.
 Do NOT use your answer to Q12 in solving this problem.
 *)
-let q9 (set1: int Set) (set2: int Set) : int Set = failwithf "Not answered"
+let q9 (set1: int Set) (set2: int Set) : int Set =
+    let onlyone= 
+        Set.difference set1 set2
+        |> Set.toList
+    let onlytwo= 
+        Set.difference set2 set1
+        |> Set.toList
+    List.append onlyone onlytwo
+    |> Set.ofList
+
+
+    // let listone= Set.toList set1
+    // let listtwo= Set.toList set2
+    // let present1 li1 li2 = 
+    //     List.filter (fun x->List.exists x li2) li1
+    // List.append (present1 listtwo listone ) (present1 listone listtwo)
+    // |> List
+
 
 //---------------------------------------Q10-------------------------------------------
 
@@ -146,7 +171,16 @@ Write using a function q9 that when given a list of functions returns the compos
 [f1;f2;f3] returns the function that when given x returns f1(f2(f3(x)) - in that order.
 You may use a full-recursive solution, or some other method.
 *)
-let q10 (fLst: ('a -> 'a) list) : 'a -> 'a = failwithf "Not answered"
+let q10 (fLst: ('a -> 'a) list) : 'a -> 'a =
+    // // let rec funct fLst x = 
+    // //     match fLst with
+    // //     | hd::tail -> 
+    // //     |
+    // let apply functi x= functi x
+    // List.fold (List.map apply fLst) [x] 
+    // |> 
+    failwithf "Not answered"
+    // let rec 
 
 //--------------------------------------Q11--------------------------------------------
     
@@ -159,7 +193,15 @@ otherwise a list of the contents of each non-None list element in the same order
 [ None, None] -> None
 [Some 1; Some 3; None ; Some 4] -> [1;3;4]
 *)
-let q11 (lstOfOpts: 'a option list) : 'a list option = failwithf "Not answered"
+let q11 (lstOfOpts: 'a option list) : 'a list option =
+    let output x=
+        match x with
+        | Some var -> [var]
+        | None -> []
+    match List.collect (output) lstOfOpts with
+    | []-> None
+    | x -> Some x
+    
 
 //-------------------------------------Q12----------------------------------------------
 
@@ -179,8 +221,15 @@ If the boolean is true the function returns:
 
 50% of mark will be awarded for compact readable solutions.
 *)
-let q12 (lst: 'a list) (goodAtCounting: bool) : string = failwithf "Not answered"
-
+let q12 (lst: 'a list) (goodAtCounting: bool) : string =
+    match lst.Length with
+    | 0 -> "Zero"
+    | 1 -> "One"
+    | 2 when not goodAtCounting -> "Two"
+    | 2
+    | 3 -> "Lots"
+    | _ when not goodAtCounting -> "Lots"
+    | _ -> "TooMany"
 
 //--------------------------------Q13---------------------------------------------
 
@@ -203,8 +252,7 @@ Q13.
     - (Some i) if i is the representative member of x's class
     - None if x is not in the map
 *)
-let q13 (unionFind: Map<int, int>) (x: int): int option =
-    failwithf "Not answered"
+let q13 (unionFind: Map<int, int>) (x: int): int option =failwithf "Not Answered"
 
 //----------------------------------Q14-----------------------------------------------
 
@@ -216,7 +264,13 @@ Q14. Write a function that takes a list of integers l and an integer n,
     Answer this question without using any function from the List or Array or Seq libraries
 *)
 let q14 (l: int list) (n: int): (int list * int list) =
-    failwithf "Not Answered"
+    let rec funct (one,two) l n =
+        match l with
+        | hd::tl when hd>n -> funct (one,hd::two) tl n
+        | hd::tl when hd<=n -> funct (hd::one,two) tl n
+        | [] -> (one,two)
+        | _ -> failwithf "for the compiler"
+    funct ([],[]) l n
 
 
 

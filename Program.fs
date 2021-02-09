@@ -14,4 +14,5 @@ let main argv =
     let defConfig = Expecto.Impl.ExpectoConfig.defaultConfig
     Expecto.Tests.runTestsInAssembly {defConfig with runInParallel = false} [||] |> ignore
     Tests.printTotals()
+    Console.ReadKey() |>ignore
     0
